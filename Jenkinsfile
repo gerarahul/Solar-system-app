@@ -39,7 +39,7 @@ pipeline {
             echo 'Cloned repo already exists - Pulling latest changes'
 
             dir("gitops-argocd") {
-              sh 'git pull'
+              sh 'git pull origin feature-branch'
             }
 
           } else {
@@ -74,7 +74,7 @@ pipeline {
     
     stage('Raise PR') {
       steps {
-        sh 'gh pr create'
+        sh "gh pr create --title 'My pull request' --body 'Please review my changes' --head feature-branch --base main'
       }
     }
   }
