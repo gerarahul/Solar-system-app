@@ -1,2 +1,2 @@
-# CICD for php solar-system application
+# CICD for php solar-system application.
 
