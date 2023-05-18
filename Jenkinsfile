@@ -9,6 +9,13 @@ pipeline {
   }
   
   stages {
+    stage("Git Checkout") {
+       steps{
+           git branch: 'main', url: 'https://github.com/gerarahul/Solar-system-app.git'
+           echo "checkout successfull"
+      }
+    }
+    
     stage('Unit Tests') {
       steps {
         echo 'Implement unit tests if applicable.'
@@ -31,6 +38,7 @@ pipeline {
       }
     }
 
+ # in this step we are cloning the feature branch of manifest repo not the main branch which will be merge into main after PR approval"
     stage('Clone/Pull k8s manifests Repo') {
       steps {
         script {
@@ -50,6 +58,7 @@ pipeline {
       }
     }
     
+# In below stage we are modifying the image in deployment.yaml file
     stage('Update Manifest') {
       steps {
         dir("gitops-argocd/jenkins-demo") {
