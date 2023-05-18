@@ -4,9 +4,9 @@ pipeline {
   environment {
     NAME = "solar-system"
     VERSION = "${env.BUILD_ID}-${env.GIT_COMMIT}"
-    IMAGE_REPO = "siddharth67"
+    IMAGE_REPO = "rgera0901"
     ARGOCD_TOKEN = credentials('argocd-token')
-    GITEA_TOKEN = credentials('gitea-token')
+    GITHUB_TOKEN = credentials('github-token')
   }
   
   stages {
@@ -45,7 +45,7 @@ pipeline {
 
           } else {
             echo 'Repo does not exists - Cloning the repo'
-            sh 'git clone -b feature-gitea http://139.59.21.103:3000/siddharth/gitops-argocd'
+            sh 'git clone -b feature-branch https://github.com/gerarahul/argocd.git'
           }
         }
       }
@@ -54,7 +54,7 @@ pipeline {
     stage('Update Manifest') {
       steps {
         dir("gitops-argocd/jenkins-demo") {
-          sh 'sed -i "s#siddharth67.*#${IMAGE_REPO}/${NAME}:${VERSION}#g" deployment.yaml'
+          sh 'sed -i "s/rgera0901.*/${IMAGE_REPO}/${NAME}:${VERSION}#g" deployment.yaml'
           sh 'cat deployment.yaml'
         }
       }
@@ -63,20 +63,14 @@ pipeline {
     stage('Commit & Push') {
       steps {
         dir("gitops-argocd/jenkins-demo") {
-          sh "git config --global user.email 'jenkins@ci.com'"
-          sh 'git remote set-url origin http://$GITEA_TOKEN@139.59.21.103:3000/siddharth/gitops-argocd'
-          sh 'git checkout feature-gitea'
+          sh "git config --global user.name "Rahul"
+          sh "git config --global user.email "rahul@testemail.com
+          sh 'git remote set-url origin httpS://$GITHUB_TOKEN@https://github.com/gerarahul/argocd.git'
+          sh 'git checkout feature-branch'
           sh 'git add -A'
           sh 'git commit -am "Updated image version for Build - $VERSION"'
-          sh 'git push origin feature-gitea'
+          sh 'git push origin feature-branch'
         }
       }
     }
-
-    stage('Raise PR') {
-      steps {
-        sh "bash pr.sh"
-      }
-    } 
-  }
 }
