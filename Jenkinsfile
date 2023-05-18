@@ -44,7 +44,7 @@ pipeline {
 
           } else {
             echo 'Repo does not exists - Cloning the repo'
-            sh 'git clone -b feature-branch https://github.com/gerarahul/argocd.git gitops-argocd'
+            sh 'git clone -b feature-branch https://github.com/gerarahul/gitops-argocd.git'
           }
         }
       }
