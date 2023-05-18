@@ -74,7 +74,7 @@ pipeline {
     
     stage('Raise PR') {
       steps {
-        sh 'gh pr create --title "My pull request" --body "Please review my changes" --head feature-branch --base main'
+        sh 'gh pr create --title "My pull request" --body "Please review my changes" --head feature-branch'
       }
     }
   }
