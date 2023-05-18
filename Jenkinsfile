@@ -72,7 +72,7 @@ pipeline {
       }
     }
     stage('Raise PR') {
-      stepss {
+      steps {
          sh 'gh issue'
     }
   }
