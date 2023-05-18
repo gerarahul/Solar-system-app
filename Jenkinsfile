@@ -81,5 +81,14 @@ pipeline {
         }
       }
     }
+    stage('Send Email Notification') {
+      steps {
+        emailext subject: 'Build and Deployment Complete',
+                  body: 'The build and deployment process has been completed successfully. Now, you can raise the PR',
+                  to: 'rgera0901@gmail.com'
+      }
+    }
+  }
+}
   }
 }
