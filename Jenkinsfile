@@ -3,7 +3,7 @@ pipeline {
 
   environment {
     NAME = "solar-system"
-    VERSION = "${env.BUILD_ID}-${env.GIT_COMMIT}"
+    VERSION = "v1.${env.BUILD_ID}"
     IMAGE_REPO = "rgera0901"
     GITHUB_TOKEN = credentials('GITHUB_TOKEN')
   }
@@ -31,7 +31,7 @@ pipeline {
       }
     }
 
-    stage('Clone/Pull Repo') {
+    stage('Clone/Pull k8s manifests Repo') {
       steps {
         script {
           if (fileExists('gitops-argocd')) {
@@ -39,7 +39,7 @@ pipeline {
             echo 'Cloned repo already exists - Pulling latest changes'
 
             dir("gitops-argocd") {
-              sh 'git pull origin feature-branch'
+              sh 'git pull'
             }
 
           } else {
@@ -63,18 +63,13 @@ pipeline {
       steps {
         dir("gitops-argocd/jenkins-demo") {
           sh 'git config --global user.name "Rahul"'
+          sh 'git config --global user.email "rahul@testemail.com"
           sh 'git remote set-url origin https://$GITHUB_TOKEN@github.com/gerarahul/argocd.git'
           sh 'git checkout feature-branch'
           sh 'git add -A'
           sh "git commit -am 'Updated image version for Build - ${VERSION}'"
           sh 'git push origin feature-branch'
         }
-      }
-    }
-    
-    stage('Raise PR') {
-      steps {
-        sh 'gh pr create --title "My pull request" --body "Please review my changes" --head feature-branch --base main'
       }
     }
   }
