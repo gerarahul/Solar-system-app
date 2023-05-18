@@ -71,9 +71,11 @@ pipeline {
         }
       }
     }
+    
     stage('Raise PR') {
       steps {
-         sh 'gh issue'
+        sh 'gh pr create --title "My pull request" --body "Please review my changes" --head feature-branch --base main'
+      }
     }
   }
 }
