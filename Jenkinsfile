@@ -71,5 +71,9 @@ pipeline {
         }
       }
     }
+    stage('Raise PR') {
+      stepss {
+         sh 'gh issue'
+    }
   }
 }
